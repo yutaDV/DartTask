@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:sqlite3/sqlite3.dart';
+import 'database.dart';
 import 'dart:io';
-//import 'package:path_provider/path_provider.dart';
 
 class Root {
   final int count;
@@ -16,6 +15,7 @@ class Root {
     required this.name,
     required this.probability,
   });
+
 
   factory Root.fromJson(Map<String, dynamic> json) {
     return Root(
@@ -63,39 +63,4 @@ Future<Root> getUserDetails(String name) async {
   }
 }
 
-void saveToDatabase(Root user) {
-  final db = sqlite3.open('names.db');
-
-  db.execute(
-      '''
-    CREATE TABLE IF NOT EXISTS names(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      count INTEGER,
-      gender TEXT,
-      probability REAL
-    )
-    '''
-  );
-
-  final existingUser = db.select(
-    'SELECT * FROM names WHERE name = ?',
-    [user.name],
-  );
-
-  if (existingUser.isEmpty) {
-    db.execute(
-        '''
-      INSERT INTO names(name, count, gender, probability)
-      VALUES (?, ?, ?, ?)
-      ''',
-        [user.name, user.count, user.gender, user.probability]
-    );
-
-    print('User details saved to database');
-  } else {
-    print('User details already exist in database');
-  }
-  //db.close();
-}
 

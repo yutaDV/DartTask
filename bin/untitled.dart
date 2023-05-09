@@ -1,6 +1,7 @@
 import 'package:untitled/untitled.dart' as untitled;
 import 'dart:io';
 import 'getname.dart';
+import 'database.dart';
 
 
 void menu() {
@@ -23,17 +24,22 @@ void menu() {
 
       switch (choice) {
         case 1:
-          getName();
         // виклик методу для запиту імені
+          getName();
           break;
         case 2:
         // виклик методу для виведення інформації з бази даних
+          printDatabase();
           break;
         case 3:
         // виклик методу для запису інформації в файл
+          saveToTextFile();
           break;
         case 4:
         // виклик методу для вибірки інформації за параметром
+          print('Please enter the letters that shouid be in the name:');
+          String letters = stdin.readLineSync() ?? '';
+          printNamesWithLetters(letters);
           break;
         case 5:
           print('До побачення!');
